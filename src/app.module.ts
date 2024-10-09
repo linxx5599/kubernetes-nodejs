@@ -4,9 +4,10 @@ import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
 import { KubernetesModule } from 'src/kubernetes/kubernetes.module';
 
-import { NamespacesModule } from 'src/namespaces/namespaces.module';
+import { NamespaceModule } from 'src/namespace/namespace.module';
+import { HostModule } from 'src/host/host.module';
 @Module({
-  imports: [KubernetesModule, NamespacesModule],
+  imports: [KubernetesModule, NamespaceModule, HostModule],
   controllers: [AppController],
   providers: [AppService],
 })

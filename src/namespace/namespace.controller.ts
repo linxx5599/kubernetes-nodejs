@@ -7,35 +7,35 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { NamespacesService } from './namespaces.service';
+import { NamespaceService } from './namespace.service';
 import type { V1Namespace } from '@kubernetes/client-node';
 
-@Controller('namespaces')
-export class NamespacesController {
-  constructor(private readonly namespacesService: NamespacesService) {}
+@Controller('namespace')
+export class NamespaceController {
+  constructor(private readonly namespaceService: NamespaceService) {}
 
   @Post()
   create(@Body() body: V1Namespace) {
-    return this.namespacesService.create(body);
+    return this.namespaceService.create(body);
   }
 
   @Get()
   findAll() {
-    return this.namespacesService.findAll();
+    return this.namespaceService.findAll();
   }
 
   @Get(':name')
   findOne(@Param('name') name: string) {
-    return this.namespacesService.findOne(name);
+    return this.namespaceService.findOne(name);
   }
 
   @Patch(':name')
   update(@Param('name') name: string, @Body() body: V1Namespace) {
-    return this.namespacesService.update(name, body);
+    return this.namespaceService.update(name, body);
   }
 
   @Delete(':name')
   remove(@Param('name') name: string) {
-    return this.namespacesService.remove(name);
+    return this.namespaceService.remove(name);
   }
 }

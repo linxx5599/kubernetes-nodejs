@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { NamespacesService } from './namespaces.service';
+import { NamespaceService } from './namespace.service';
 import { K8S_API } from 'config/constant';
 import { CoreV1Api, type V1Namespace } from '@kubernetes/client-node';
 
-describe('NamespacesService', () => {
-  let service: NamespacesService;
+describe('NamespaceService', () => {
+  let service: NamespaceService;
   let mockK8sApi: Partial<CoreV1Api>;
 
   beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('NamespacesService', () => {
 
     const moduleRef = await Test.createTestingModule({
       providers: [
-        NamespacesService,
+        NamespaceService,
         {
           provide: K8S_API,
           useValue: mockK8sApi as CoreV1Api,
@@ -26,7 +26,7 @@ describe('NamespacesService', () => {
       ],
     }).compile();
 
-    service = moduleRef.get<NamespacesService>(NamespacesService);
+    service = moduleRef.get<NamespaceService>(NamespaceService);
   });
 
   it('should create a namespace', async () => {
@@ -35,7 +35,7 @@ describe('NamespacesService', () => {
     expect(mockK8sApi.createNamespace).toHaveBeenCalledWith(namespace);
   });
 
-  it('should find all namespaces', async () => {
+  it('should find all namespace', async () => {
     await service.findAll();
     expect(mockK8sApi.listNamespace).toHaveBeenCalled();
   });

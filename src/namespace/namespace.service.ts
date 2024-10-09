@@ -1,29 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
-import { K8S_API, K8S_CUSTOM_API } from 'config/constant';
-import {
-  CoreV1Api,
-  CustomObjectsApi,
-  type V1Namespace,
-} from '@kubernetes/client-node';
+import { K8S_API } from 'config/constant';
+import { CoreV1Api, type V1Namespace } from '@kubernetes/client-node';
 
 @Injectable()
 export class NamespaceService {
-  constructor(
-    @Inject(K8S_API) private readonly k8sApi: CoreV1Api,
-    @Inject(K8S_CUSTOM_API) private readonly k8sCustomApi: CustomObjectsApi,
-  ) {}
-  create(body: V1Namespace) {
-    return this.k8sApi.createNamespace(body);
+  constructor(@Inject(K8S_API) private readonly k8sApi: CoreV1Api) {}
+  async create(body: V1Namespace) {
+    try {
+      return await this.k8sApi.createNamespace(body);
+    } catch (error) {
+      throw new HttpException(error.body, HttpStatus.CONFLICT);
+    }
   }
 
   async findAll() {
-    // const response = await this.k8sCustomApi.listClusterCustomObject(
-    //   'virt.cum.io',
-    //   'v1',
-    //   'hosts',
-    // );
-    // return response.body;
     return this.k8sApi.listNamespace();
   }
 
@@ -35,7 +26,11 @@ export class NamespaceService {
     return this.k8sApi.patchNamespace(name, body);
   }
 
-  remove(name: string) {
-    return this.k8sApi.deleteNamespace(name);
+  async remove(name: string) {
+    try {
+      return await this.k8sApi.deleteNamespace(name);
+    } catch (error) {
+      throw new HttpException(error.body, HttpStatus.CONFLICT);
+    }
   }
 }

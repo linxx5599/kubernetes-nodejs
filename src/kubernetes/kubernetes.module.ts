@@ -9,9 +9,23 @@ import kc from './kubeClient';
       provide: K8S_API,
       useFactory: async (): Promise<CoreV1Api> => {
         const k8sApi = kc.makeApiClient(CoreV1Api) as CoreV1Api;
-        k8sApi.defaultHeaders = {
-          'Content-Type': 'application/merge-patch+json',
-        };
+        k8sApi.addInterceptor((request) => {
+          //create
+          if (request.method === 'POST') {
+            request.headers = {
+              ...request.headers,
+              'Content-Type': 'application/json',
+            };
+          }
+          //update
+          if (request.method === 'PATCH') {
+            request.headers = {
+              ...request.headers,
+              'Content-Type': 'application/merge-patch+json',
+            };
+          }
+          return Promise.resolve();
+        });
         return k8sApi;
       },
     },

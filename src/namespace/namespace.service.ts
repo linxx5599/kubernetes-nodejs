@@ -15,15 +15,26 @@ export class NamespaceService {
   }
 
   async findAll() {
-    return this.k8sApi.listNamespace();
+    try {
+      return this.k8sApi.listNamespace();
+    } catch (error) {
+      throw new HttpException(error.body, HttpStatus.CONFLICT);
+    }
   }
 
-  findOne(name: string) {
-    return this.k8sApi.readNamespace(name);
+  async findOne(name: string) {
+    try {
+      return this.k8sApi.readNamespace(name);
+    } catch (error) {
+      throw new HttpException(error.body, HttpStatus.CONFLICT);
+    }
   }
-
-  update(name: string, body: V1Namespace) {
-    return this.k8sApi.patchNamespace(name, body);
+  async update(name: string, body: V1Namespace) {
+    try {
+      return await this.k8sApi.patchNamespace(name, body);
+    } catch (error) {
+      throw new HttpException(error.body, HttpStatus.CONFLICT);
+    }
   }
 
   async remove(name: string) {

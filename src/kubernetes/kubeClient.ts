@@ -10,6 +10,7 @@ class KubeClient {
   private watcherPaths = [
     '/api/v1/nodes',
     '/api/v1/namespaces',
+    '/api/v1/pods',
     '/apis/virt.cum.io/v1/virtualmachines',
     '/apis/virt.cum.io/v1/hosts',
   ];

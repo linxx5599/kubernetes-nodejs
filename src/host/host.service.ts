@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { HOSTS, K8S_CUSTOM_API, VERSION_1, VIRT_CUM_IO } from 'config/constant';
 import { CustomObjectsApi, type V1Namespace } from '@kubernetes/client-node';
+import { handleError } from 'config/share';
 
 @Injectable()
 export class HostService {
@@ -18,7 +19,7 @@ export class HostService {
       );
       return res;
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 
@@ -50,16 +51,20 @@ export class HostService {
       );
       return res;
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 
-  remove(name: string) {
-    return this.k8sCustomApi.deleteClusterCustomObject(
-      VIRT_CUM_IO,
-      VERSION_1,
-      HOSTS,
-      name,
-    );
+  async remove(name: string) {
+    try {
+      return await this.k8sCustomApi.deleteClusterCustomObject(
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
+        name,
+      );
+    } catch (error) {
+      handleError(error);
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { K8S_API } from 'config/constant';
 import { CoreV1Api, type V1Namespace } from '@kubernetes/client-node';
+import { handleError } from 'config/share';
 
 @Injectable()
 export class NamespaceService {
@@ -10,7 +11,7 @@ export class NamespaceService {
     try {
       return await this.k8sApi.createNamespace(body);
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 
@@ -18,7 +19,7 @@ export class NamespaceService {
     try {
       return this.k8sApi.listNamespace();
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 
@@ -26,14 +27,14 @@ export class NamespaceService {
     try {
       return this.k8sApi.readNamespace(name);
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
   async update(name: string, body: V1Namespace) {
     try {
       return await this.k8sApi.patchNamespace(name, body);
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 
@@ -41,7 +42,7 @@ export class NamespaceService {
     try {
       return await this.k8sApi.deleteNamespace(name);
     } catch (error) {
-      throw new HttpException(error.body, HttpStatus.CONFLICT);
+      handleError(error);
     }
   }
 }

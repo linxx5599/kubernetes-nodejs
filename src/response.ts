@@ -30,7 +30,6 @@ export class HttpFilter implements ExceptionFilter {
     if (exception['response']) {
       err = exception['response'];
     }
-
     res.status(status).json(err);
   }
 }

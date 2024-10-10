@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
-import { HOSTS, K8S_CUSTOM_API, VERSION, VIRT_CUM_IO } from 'config/constant';
+import { HOSTS, K8S_CUSTOM_API, VERSION_1, VIRT_CUM_IO } from 'config/constant';
 import { CustomObjectsApi, type V1Namespace } from '@kubernetes/client-node';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class HostService {
     try {
       const res = await this.k8sCustomApi.createClusterCustomObject(
         VIRT_CUM_IO,
-        VERSION,
+        VERSION_1,
         HOSTS,
         body,
       );
@@ -25,7 +25,7 @@ export class HostService {
   findAll() {
     return this.k8sCustomApi.listClusterCustomObject(
       VIRT_CUM_IO,
-      VERSION,
+      VERSION_1,
       HOSTS,
     );
   }
@@ -33,7 +33,7 @@ export class HostService {
   findOne(name: string) {
     return this.k8sCustomApi.getClusterCustomObject(
       VIRT_CUM_IO,
-      VERSION,
+      VERSION_1,
       HOSTS,
       name,
     );
@@ -43,7 +43,7 @@ export class HostService {
     try {
       const res = await this.k8sCustomApi.patchClusterCustomObject(
         VIRT_CUM_IO,
-        VERSION,
+        VERSION_1,
         HOSTS,
         name,
         body,
@@ -57,7 +57,7 @@ export class HostService {
   remove(name: string) {
     return this.k8sCustomApi.deleteClusterCustomObject(
       VIRT_CUM_IO,
-      VERSION,
+      VERSION_1,
       HOSTS,
       name,
     );

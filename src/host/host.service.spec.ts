@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { HostService } from './host.service';
 import { CustomObjectsApi } from '@kubernetes/client-node';
+import { HOSTS, VERSION_1, VIRT_CUM_IO } from 'config/constant';
 
 describe('HostService', () => {
   let hostService: HostService;
@@ -29,9 +30,9 @@ describe('HostService', () => {
         .mockResolvedValue({} as any);
       await hostService.create(mockBody);
       expect(mockK8sCustomApi.createClusterCustomObject).toHaveBeenCalledWith(
-        'virt.cum.io/v1',
-        'v1',
-        'hosts',
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
         mockBody,
       );
     });
@@ -45,9 +46,9 @@ describe('HostService', () => {
         .mockResolvedValue(mockResponse);
       const result = await hostService.findAll();
       expect(mockK8sCustomApi.listClusterCustomObject).toHaveBeenCalledWith(
-        'virt.cum.io/v1',
-        'v1',
-        'hosts',
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
       );
       expect(result).toEqual(mockResponse.body);
     });
@@ -61,9 +62,9 @@ describe('HostService', () => {
         .mockResolvedValue({} as any);
       await hostService.findOne(mockName);
       expect(mockK8sCustomApi.getClusterCustomObject).toHaveBeenCalledWith(
-        'virt.cum.io/v1',
-        'v1',
-        'hosts',
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
         mockName,
       );
     });
@@ -78,9 +79,9 @@ describe('HostService', () => {
         .mockResolvedValue({} as any);
       await hostService.update(mockName, mockBody);
       expect(mockK8sCustomApi.patchClusterCustomObject).toHaveBeenCalledWith(
-        'virt.cum.io/v1',
-        'v1',
-        'hosts',
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
         mockName,
         mockBody,
       );
@@ -95,9 +96,9 @@ describe('HostService', () => {
         .mockResolvedValue({} as any);
       await hostService.remove(mockName);
       expect(mockK8sCustomApi.deleteClusterCustomObject).toHaveBeenCalledWith(
-        'virt.cum.io/v1',
-        'v1',
-        'hosts',
+        VIRT_CUM_IO,
+        VERSION_1,
+        HOSTS,
         mockName,
       );
     });

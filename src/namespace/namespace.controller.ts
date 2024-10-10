@@ -8,14 +8,14 @@ import {
   Delete,
 } from '@nestjs/common';
 import { NamespaceService } from './namespace.service';
-import type { CoreV1Event } from '@kubernetes/client-node';
+import type { V1Namespace } from '@kubernetes/client-node';
 
 @Controller('namespace')
 export class NamespaceController {
   constructor(private readonly namespaceService: NamespaceService) {}
 
   @Post()
-  create(@Body() body: CoreV1Event) {
+  create(@Body() body: V1Namespace) {
     return this.namespaceService.create(body);
   }
 
@@ -30,7 +30,7 @@ export class NamespaceController {
   }
 
   @Patch(':name')
-  update(@Param('name') name: string, @Body() body: CoreV1Event) {
+  update(@Param('name') name: string, @Body() body: V1Namespace) {
     return this.namespaceService.update(name, body);
   }
 

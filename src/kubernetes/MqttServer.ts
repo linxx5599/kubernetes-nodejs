@@ -1,14 +1,15 @@
+import { MQTT_URI } from 'config/constant';
 import mqtt from 'mqtt';
 
 class MqttService {
-  client: any;
+  client: mqtt.MqttClient;
   constructor() {
     this.client = null;
     this.connect();
   }
 
   connect() {
-    this.client = mqtt.connect('ws://0.0.0.0:8083/mqtt');
+    this.client = mqtt.connect(MQTT_URI);
 
     this.client.on('connect', () => {
       console.log('Connected to MQTT broker');

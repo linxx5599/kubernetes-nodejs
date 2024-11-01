@@ -1,4 +1,4 @@
-export const MQTT_PORT = 8880;
+export const MQTT_URI = 'ws://0.0.0.0:8083/mqtt';
 export const K8S_API = 'K8S_API';
 export const K8S_CUSTOM_API = 'K8S_CUSTOM_API';
 
